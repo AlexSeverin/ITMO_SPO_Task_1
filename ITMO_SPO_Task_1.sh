@@ -24,22 +24,22 @@ do
   	EXTENSION=$(echo "$filename" | sed 's/^.*\.//')
 	echo $EXTENSION
 
-	# Get file modified date
+	# Get file modified date from descriptor 1
 	MODIFIED=$(stat -c "%y" "$f" | awk '{print $1}')
 	echo $MODIFIED
 
-	# Get file size
+	# Get file size from descriptor 1
   	SIZE=$(du -sh "$f" | awk '{print $1}')
 	echo $SIZE
 
 	if [[ -d "$f" ]]; then
  		EXTENSION="dir"
- 		SIZE="dir"
+ 		#SIZE="dir"
 	fi
 
 	# Get video duration
 	DURATION=$(ffprobe -v quiet -print_format compact=print_section=0:nokey=1:escape=csv -show_entries format=duration "$f")
 	
-	# Write results to the report.xls
+	# Write results from stdout to the report.xls
 	echo -e "$NAME \t $EXTENSION \t $MODIFIED \t $SIZE \t $DURATION" >> report.xls
 done
